@@ -23,25 +23,17 @@ class Transaksi extends Component
         $member = Member::where('no_hp', $no_hp)->first();
 
         if (!$member) {
-            session()->flash('member_error', 'Member not found');
+            session()->flash('member_error', 'Member tidak Ditemukan');
         } else {
             $this->member = $member;
         }
     }
 
-    public function calculateDiscount()
-    {
-        if ($this->member && $this->totalBelanja >= 100000) {
-            $this->diskon = $this->totalBelanja * 0.05; // 10% discount
-            $this->totalBelanja -= $this->diskon;
-        } else {
-            $this->diskon = 0;
-        }
-    }
-
-    public function updatedTotalBelanja($value)
-    {
-        $this->calculateDiscount();
+    public function processTransaction() {
+        $this->activeTransaction->total = $this->totalBelanja;
+        $this->activeTransaction->status = 'selesai';
+        $this->activeTransaction->save();
+        $this->reset();
     }
 
     public function newTransaction() {
@@ -100,13 +92,6 @@ class Transaksi extends Component
         $detail->delete();
     }
 
-    public function processTransaction() {
-        $this->activeTransaction->total = $this->totalBelanja;
-        $this->activeTransaction->status = 'selesai';
-        $this->activeTransaction->save();
-        $this->reset();
-    }
-
     public function render()
     {
         if($this->activeTransaction) {
@@ -114,6 +99,13 @@ class Transaksi extends Component
             $this->totalBelanja = $semuaProduk->sum(function($detail) {
                 return $detail->produk->harga * $detail->jumlah_produk;
             });
+
+            if ($this->member && $this->totalBelanja >= 100000) {
+                $this->diskon = $this->totalBelanja * 0.05; // 5% discount
+                $this->totalBelanja -= $this->diskon;
+            } else {
+                $this->diskon = 0;
+            }
         }else{
             $semuaProduk = [];
         }
