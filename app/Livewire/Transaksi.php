@@ -7,12 +7,42 @@ use Livewire\Component;
 use App\Models\Transaksi as ModelTransaksi;
 use App\Models\DetailTransaksi;
 use App\Models\Produk;
+use App\Models\Member;
 
 class Transaksi extends Component
 {
-    public $kode, $total, $kembalian, $totalBelanja;
+    public $kode, $total, $kembalian, $totalBelanja, $diskon;
     public $bayar = 0;
     public $activeTransaction;
+    public $no_hp;
+    public $member;
+
+    public function checkMember()
+    {
+        $no_hp = $this->no_hp;
+        $member = Member::where('no_hp', $no_hp)->first();
+
+        if (!$member) {
+            session()->flash('member_error', 'Member not found');
+        } else {
+            $this->member = $member;
+        }
+    }
+
+    public function calculateDiscount()
+    {
+        if ($this->member && $this->totalBelanja >= 100000) {
+            $this->diskon = $this->totalBelanja * 0.05; // 10% discount
+            $this->totalBelanja -= $this->diskon;
+        } else {
+            $this->diskon = 0;
+        }
+    }
+
+    public function updatedTotalBelanja($value)
+    {
+        $this->calculateDiscount();
+    }
 
     public function newTransaction() {
         $this->reset();

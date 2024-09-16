@@ -14,6 +14,10 @@ class Member extends Component
     public $selectedMember;
     public $search = '';
 
+    public function cariMember() {
+        return ModelMember::where('nama_member', 'like', '%'.$this->search.'%')->get();
+    }
+
     public function simpan() {
         $this->validate([
             'nama' => 'required',
@@ -86,14 +90,10 @@ class Member extends Component
 
     public function render()
     {
-        $results = [];
-        if($this->search >= 1) {
-            $results = ModelMember::where('nama_member', 'like', '%'.$this->search.'%')->get();
-        }
-
+        $hasilMember = $this->cariMember();
         return view('livewire.member')->with([
             'members' => ModelMember::all(),
-            'cari' => $results
+            'hasilmember' => $hasilMember
         ]);
     }
 }

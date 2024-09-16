@@ -15,6 +15,17 @@
             @if($activeTransaction)
             <div style="width: 75rem;">
                 <div class="row mt-3">
+                    <div class="card border-primary mb-2" style="width: 40vw;">
+                        <h4>Member</h4>
+                        <input type="text" class="my-2" placeholder="Nomor Telepon" wire:model.lazy="no_hp">
+                        <button class="btn btn-secondary" wire:click='checkMember'>Cek</button>
+                        @if(session()->has('member_error'))
+                            <div class="alert alert-danger mt-2" role="alert">{{ session('member_error') }}</div>
+                        @endif
+                        @if($member)
+                            <div class="alert alert-success mt-2" role="alert">Member found: {{ $member->nama_member }}</div>
+                        @endif
+                    </div>
                     <div class="col-8">
                         <div class="card border-primary">
                             <div class="card-body">
