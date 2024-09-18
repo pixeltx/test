@@ -75,45 +75,59 @@
         <main class="d-flex">
             <div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark" style="width: 280px; min-height:92.3vh; height: auto;">
                 <ul class="nav nav-pills flex-column mb-auto">
-                  <li class="nav-item">
+                  <li class="nav-item mb-2">
                     <a href="{{ route('home') }}" wire:navigate class="nav-link {{ request()->routeIs('home') ? 'active' : '' }}">
                         <img src="{{ asset('svg/home.svg') }}" alt="">
                         Home
                     </a>
                   </li>
                   @if (Auth::user()->role == 'kasir')    
-                  <li>
+                  <li class="mb-2">
                     <a href="{{ route('transaksi') }}" wire:navigate class="nav-link {{ request()->routeIs('transaksi') ? 'active' : '' }}">
                         <img src="{{ asset('svg/bag.svg') }}" alt="">
                         Transaksi
                     </a>
                   </li>
                   @endif
-                  <li>
+                  <li class="mb-2">
                     <a href="{{ route('produk') }}" wire:navigate class="nav-link {{ request()->routeIs('produk') ? 'active' : '' }}">
                         <img src="{{ asset('svg/box.svg') }}" alt="">
                         Produk
                     </a>
                   </li>
                   @if (Auth::user()->role == 'admin')    
-                  <li>
+                  <li class="mb-2">
                     <a href="{{ route('petugas') }}" wire:navigate class="nav-link {{ request()->routeIs('petugas') ? 'active' : '' }}">
                         <img src="{{ asset('svg/usersolo.svg') }}" alt="">
                         Petugas
                     </a>
                   </li>
                   @endif
-                  <li>
+                  <li class="mb-2">
                     <a href="{{ route('member') }}" wire:navigate class="nav-link {{ request()->routeIs('member') ? 'active' : '' }}">
                         <img src="{{ asset('svg/groupuser.svg') }}" alt="">    
                         Member
                     </a>
                   </li>
-                  <li>
+                  <li style="margin-bottom: 20rem;">
                     <a href="{{ route('laporan') }}" wire:navigate class="nav-link {{ request()->routeIs('laporan') ? 'active' : '' }}">
                         <img src="{{ asset('svg/fileicon.svg') }}" alt="">    
                         Laporan
                     </a>
+                  </li>
+                  <li>
+                    <div>
+                        <a class="font-weight-bold text-decoration-none text-danger" href="{{ route('logout') }}"
+                           onclick="event.preventDefault();
+                                         document.getElementById('logout-form').submit();">
+                            <img src="{{ asset('svg/home.svg') }}" alt="">
+                            {{ __('Logout') }}
+                        </a>
+
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                            @csrf
+                        </form>
+                    </div>
                   </li>
                 </ul>
             </div>

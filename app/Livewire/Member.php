@@ -92,8 +92,7 @@ class Member extends Component
     {
         $hasilMember = $this->cariMember();
         return view('livewire.member')->with([
-            'members' => ModelMember::all(),
-            'hasilmember' => $hasilMember
+            'members' => $hasilMember
         ]);
     }
 }

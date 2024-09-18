@@ -3,15 +3,18 @@
         <h1>Halaman Member</h1>
             <div class="container">
                 <div class="row my-2">
-                    <div class="col-12">
+                    <div class="col-9">
                         <button wire:click="selectMenu('lihat')" class="btn {{ $selectedMenu=='lihat' ? 'btn-primary' : 'btn-outline-primary' }}">Semua Member</button>
                         <button wire:click="selectMenu('tambah')" class="btn {{ $selectedMenu=='tambah' ? 'btn-primary' : 'btn-outline-primary' }}">Tambah Member</button>
                         <button wire:loading class="btn btn-info">...</button>
-                        <form role="search">
+                    </div>
+                    @if ($selectedMenu == 'lihat')
+                    <div class="col-3">
+                        <form role="search" class="float-right">
                             <input type="text" class="" wire:model.live='search' placeholder="Cari">
-                            <button wire:click="selectMenu('cari')" class="btn btn-info">Cari</button>
                         </form>
                     </div>
+                    @endif
                 </div>
                 <div class="row">
                     <div class="col-12">
@@ -87,32 +90,6 @@
                                 <p>Nama: {{ $selectedMember->nama_member }}</p>
                                 <button class="btn btn-danger" wire:click='hapus'>Hapus</button>
                                 <button class="btn btn-secondary" wire:click='batal'>Batal</button>
-                            </div>
-                        </div>
-                        @elseif ($selectedMenu=='cari')
-                        <div class="card border-primary" style="width: 75vw;">
-                            <div class="card-header">
-                                Hasil Cari Member
-                            </div>
-                            <div class="card-body">
-                                <table class="table table-bordered">
-                                    <thead>
-                                        <th>No</th>
-                                        <th>Nama</th>
-                                        <th>Alamat</th>
-                                        <th>No Hp</th>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($cari as $member)
-                                        <tr>
-                                            <td>{{ $loop->iteration }}</td>
-                                            <td>{{ $member->nama_member }}</td>
-                                            <td>{{ $member->alamat }}</td>
-                                            <td>{{ $member->no_hp }}</td>
-                                        </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
                             </div>
                         </div>
                         @endif
