@@ -92,6 +92,15 @@ class Transaksi extends Component
         $detail->delete();
     }
 
+    public function calculateDiscount() {
+        if ($this->member && $this->totalBelanja >= 100000) {
+            $this->diskon = $this->totalBelanja * 0.05; // 5% discount
+            $this->totalBelanja -= $this->diskon;
+        } else {
+            $this->diskon = 0;
+        }
+    }
+
     public function render()
     {
         if($this->activeTransaction) {
@@ -100,12 +109,7 @@ class Transaksi extends Component
                 return $detail->produk->harga * $detail->jumlah_produk;
             });
 
-            if ($this->member && $this->totalBelanja >= 100000) {
-                $this->diskon = $this->totalBelanja * 0.05; // 5% discount
-                $this->totalBelanja -= $this->diskon;
-            } else {
-                $this->diskon = 0;
-            }
+            $this->calculateDiscount();
         }else{
             $semuaProduk = [];
         }
